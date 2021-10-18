@@ -1,4 +1,4 @@
-# vue2-datepicker
+# huggy-datepicker
 
 [English Version](https://github.com/mengxiong10/vue2-datepicker/blob/master/README.md)
 

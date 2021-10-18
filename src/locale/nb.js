@@ -1,4 +1,4 @@
-import DatePicker from 'vue2-datepicker';
+import DatePicker from 'huggy-datepicker';
 import nb from 'date-format-parse/lib/locale/nb';
 
 const lang = {
