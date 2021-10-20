@@ -370,13 +370,6 @@
     line-height: 18px;
   }
 
-  .today {
-    font-weight: 900;
-    color: $today-color;
-    &.disabled {
-      opacity: 0.5;
-    }
-  }
   .cell.not-current-month {
     color: #ccc;
     background: none; // cover the in-range style
@@ -431,6 +424,14 @@
       }
     }
 
+    &.today {
+      font-weight: 900;
+      color: $today-color;
+      &.disabled {
+        opacity: 0.5;
+      }
+    }
+
     &.active {
       color: #fff;
       background: unset;
@@ -481,7 +482,7 @@
       background-color: $calendar-in-range-background-color;
 
       + .active :after,
-      + .cell:not(.in-range):not(.hover-in-range):not(.disable):not(.not-current-month) :after {
+      + .cell:not(.in-range):not(.hover-in-range):not(.disabled):not(.not-current-month) :after {
         content: '';
         display: inline-block;
         width: 32px;

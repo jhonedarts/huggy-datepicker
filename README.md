@@ -1,6 +1,6 @@
 # huggy-datepicker
 
-> A Datepicker Component modified from the https://github.com/mengxiong10/huggy-datepicker v3.10.2 project
+> A Datepicker Component modified from the https://github.com/mengxiong10/vue2-datepicker v3.10.2 project
 
 <a href="https://travis-ci.com/jhonedarts/huggy-datepicker">
   <img src="https://travis-ci.com/jhonedarts/huggy-datepicker.svg?branch=master" alt="build:passed">
