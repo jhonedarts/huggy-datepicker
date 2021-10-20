@@ -43,6 +43,13 @@ export function getRelativePosition(el, targetWidth, targetHeight, fixed) {
   } else {
     left = offsetX + relativeRect.width - targetWidth;
   }
+  if (left < 130) {
+    if (relativeRect.left > 130) { 
+      left = 130;
+    } else {
+      left = relativeRect.left;
+    }
+  }
   if (relativeRect.top <= targetHeight && dh - relativeRect.bottom <= targetHeight) {
     top = offsetY + dh - relativeRect.top - targetHeight;
   } else if (relativeRect.top + relativeRect.height / 2 <= dh / 2) {

@@ -104,10 +104,10 @@ body {
     outline: none;
     cursor: pointer;
     &:hover {
-      color: mix(#fff, #1284e7, 0.8);
+      color: mix(#fff, #321BDE, 0.8);
     }
     &.active {
-      color: #1284e7;
+      color: #321BDE;
     }
   }
 }

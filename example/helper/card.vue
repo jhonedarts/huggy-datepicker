@@ -58,7 +58,7 @@ $border-color: #ebedf0;
   margin-bottom: 60px;
   margin-top: 20px;
   &.active {
-    border-color: #1284e7;
+    border-color: #321BDE;
   }
 }
 

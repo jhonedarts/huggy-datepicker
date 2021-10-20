@@ -57,6 +57,10 @@ export default {
       type: String,
       default: 'YYYY-MM-DD',
     },
+    calendarTextFormat: {
+      type: Object,
+      default: () => ({}),
+    },
     calendar: Date,
     // update date when select year or month
     partialUpdate: {
@@ -262,6 +266,7 @@ export default {
         getCellClasses={this.getDateClasses}
         getRowClasses={this.getWeekState}
         titleFormat={this.titleFormat}
+        calendarTextFormat={this.calendarTextFormat}
         showWeekNumber={
           typeof this.showWeekNumber === 'boolean' ? this.showWeekNumber : this.type === 'week'
         }

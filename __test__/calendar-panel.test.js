@@ -118,44 +118,6 @@ describe('CalendarPanel', () => {
     }
   });
 
-  ['date', 'month'].forEach(type => {
-    it(`feat: click prev/next year in ${type} panel`, async () => {
-      wrapper = mount(CalendarPanel, {
-        propsData: {
-          value: new Date(2018, 4, 5),
-          defaultPanel: type,
-        },
-      });
-      const nextBtn = wrapper.find('.mx-btn-icon-double-right');
-      const lastBtn = wrapper.find('.mx-btn-icon-double-left');
-      const { vm } = wrapper;
-      const oldYear = vm.calendarYear;
-      expect(oldYear).toBe(2018);
-      await nextBtn.trigger('click');
-      let newYear = vm.calendarYear;
-      expect(newYear).toBe(2019);
-      await lastBtn.trigger('click');
-      newYear = vm.calendarYear;
-      expect(newYear).toBe(oldYear);
-    });
-  });
-
-  it('feat: click prev/next decade', () => {
-    wrapper = mount(CalendarPanel, {
-      propsData: {
-        value: new Date(2018, 4, 5),
-        defaultPanel: 'year',
-      },
-    });
-    const nextBtn = wrapper.find('.mx-btn-icon-double-right');
-    const lastBtn = wrapper.find('.mx-btn-icon-double-left');
-    nextBtn.trigger('click');
-    expect(wrapper.vm.calendarYear).toBe(2028);
-    lastBtn.trigger('click');
-    lastBtn.trigger('click');
-    expect(wrapper.vm.calendarYear).toBe(2008);
-  });
-
   const renderType = type => {
     it(`prop: type=${type}`, () => {
       wrapper = shallowMount(CalendarPanel, {

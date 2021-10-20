@@ -116,6 +116,34 @@ export default {
       type: String,
       default: 'OK',
     },
+    clearButton: {
+      type: Boolean,
+      default: false,
+    },
+    clearText: {
+      type: String,
+      default: 'Clear',
+    },
+    customShortcut: {
+      type: Boolean,
+      default: false,
+    },
+    CustomShortcutText: {
+      type: String,
+      default: 'Custom',
+    },
+    calendarTextFormat: {
+      type: Object,
+      default: () => {return {
+        month: 'MMMM',
+        // MMMM: 'full',
+        // MMM: 'short',
+        week: 'W',
+        // WWW: 'short',
+        // WW: 'min',
+        // W: 'initial',
+      }},
+    },
     renderInputText: {
       type: Function,
     },
@@ -143,6 +171,17 @@ export default {
     };
   },
   computed: {
+    shortcutsComputed() {
+      if (this.customShortcut) {
+        this.shortcuts.push({
+          text: this.CustomShortcutText,
+          onClick() {},
+          custom: true,
+        })
+      }
+
+      return this.shortcuts;
+    },
     popupVisible() {
       return !this.disabled && (typeof this.open === 'boolean' ? this.open : this.defaultOpen);
     },
@@ -230,6 +269,16 @@ export default {
         this.closePopup();
       }
     },
+    setCustomShortcut() {
+      if (this.shortcuts.length > 0) {
+        this.shortcuts.forEach(s => {
+          s.selected = false;
+          if (s.custom) {
+            s.selected = true;
+          }
+        })
+      }
+    },
     getFormatter(key) {
       return (
         (isObject(this.formatter) && this.formatter[key]) ||
@@ -288,6 +337,7 @@ export default {
       // fix IE11/10 trigger input event when input is focused. (placeholder !== '')
       this.userInput = null;
       const value = Array.isArray(date) ? date.map(this.date2value) : this.date2value(date);
+      console.log('val', value);
       this.$emit('input', value);
       this.$emit('change', value, type);
       if (close) {
@@ -340,8 +390,15 @@ export default {
         );
       }
     },
+    handleSelectOneDate(val, type, dates) {
+      this.setCustomShortcut();
+      const val2 = this.currentValue;
+      this.currentValue = val;
+      this.currentValue = val2;
+    },
     clear() {
-      this.emitValue(this.range ? [null, null] : null);
+      this.setCustomShortcut();
+      this.emitValue(this.range ? [null, null] : null, null, !this.confirm);
       this.$emit('clear');
     },
     handleClear(evt) {
@@ -354,11 +411,19 @@ export default {
     },
     handleSelectShortcut(evt) {
       const index = evt.currentTarget.getAttribute('data-index');
-      const item = this.shortcuts[parseInt(index, 10)];
+      this.shortcutsComputed.forEach(shortcut => {
+        shortcut.selected = false;
+      });
+      const item = this.shortcutsComputed[parseInt(index, 10)];
+      item.selected = true;
       if (isObject(item) && typeof item.onClick === 'function') {
+
+        if (item.custom) {
+          this.emitValue(this.currentValue, null, !this.confirm);
+        }
         const date = item.onClick(this);
         if (date) {
-          this.emitValue(date);
+          this.emitValue(date, null, !this.confirm);
         }
       }
     },
@@ -499,6 +564,7 @@ export default {
       const on = {
         ...pick(this.$listeners, Component.emits || []),
         select: this.handleSelectDate,
+        selectone: this.handleSelectOneDate,
       };
       const content = <Component {...{ props, on, ref: 'picker' }} />;
       return (
@@ -518,12 +584,12 @@ export default {
             value: this.currentValue,
             emit: this.handleSelectDate,
           })}
-          {this.shortcuts.map((v, i) => (
+          {this.shortcutsComputed.map((v, i) => (
             <button
               key={i}
               data-index={i}
               type="button"
-              class={`${prefixClass}-btn ${prefixClass}-btn-text ${prefixClass}-btn-shortcut`}
+              class={`${prefixClass}-btn ${prefixClass}-btn-text ${prefixClass}-btn-shortcut ${v.selected? 'active': ''}`}
               onClick={this.handleSelectShortcut}
             >
               {v.text}
@@ -550,14 +616,21 @@ export default {
             value: this.currentValue,
             emit: this.handleSelectDate,
           })}
-          {this.confirm ? (
-            <button
-              type="button"
-              class={`${prefixClass}-btn ${prefixClass}-datepicker-btn-confirm`}
-              onClick={this.handleConfirmDate}
-            >
-              {this.confirmText}
-            </button>
+          {this.confirm || this.clearButton ? (
+            <div class={`${prefixClass}-footer-buttons`}>
+              {this.clearButton ? (<button
+                type="button"
+                class={`${prefixClass}-btn ${prefixClass}-datepicker-btn-clear`}
+                onClick={this.clear} >
+                {this.clearText}
+              </button>) :(<div/>)}
+              {this.confirm ? (<button
+                type="button"
+                class={`${prefixClass}-btn ${prefixClass}-datepicker-btn-confirm`}
+                onClick={this.handleConfirmDate} >
+                {this.confirmText}
+              </button>) :null}
+            </div>
           ) : null}
         </div>
       );
@@ -565,12 +638,12 @@ export default {
   },
   render() {
     const { prefixClass, inline, disabled } = this;
-    const sidedar = this.hasSlot('sidebar') || this.shortcuts.length ? this.renderSidebar() : null;
+    const sidedar = this.hasSlot('sidebar') || this.shortcutsComputed.length ? this.renderSidebar() : null;
+    const footer = this.hasSlot('footer') || this.confirm ? this.renderFooter() : null;
+    const header = this.hasSlot('header') ? this.renderHeader() : null;
     const content = (
       <div class={`${prefixClass}-datepicker-content`}>
-        {this.hasSlot('header') ? this.renderHeader() : null}
         {this.renderContent()}
-        {this.hasSlot('footer') || this.confirm ? this.renderFooter() : null}
       </div>
     );
     return (
@@ -592,13 +665,17 @@ export default {
             appendToBody={this.appendToBody}
             onClickoutside={this.handleClickOutSide}
           >
+            {header}
             {sidedar}
             {content}
+            {footer}
           </Popup>
         ) : (
           <div class={`${prefixClass}-datepicker-main`}>
+            {header}
             {sidedar}
             {content}
+            {footer}
           </div>
         )}
       </div>

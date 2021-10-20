@@ -1,5 +1,5 @@
 import CalendarPanel from './calendar-panel';
-import { getValidDate, isValidDate, isValidRangeDate, startOfMonth, endOfMonth } from '../util/date';
+import { getValidDate, isValidDate, isValidRangeDate, startOfMonth } from '../util/date';
 
 export default {
   name: 'CalendarRange',
@@ -70,6 +70,7 @@ export default {
         this.emitDate(this.innerValue, type);
       } else {
         this.innerValue = [date, new Date(NaN)];
+        this.emitDate(this.innerValue, type, 'selectone');
       }
     },
     onDateMouseEnter(cell) {
@@ -78,8 +79,8 @@ export default {
     onDateMouseLeave() {
       this.hoveredValue = null;
     },
-    emitDate(dates, type) {
-      this.$emit('select', dates, type);
+    emitDate(dates, type, name='select') {
+      this.$emit(name, dates, type);
     },
     updateStartCalendar(value) {
       this.updateCalendars([value, this.calendars[1]], 1);

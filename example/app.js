@@ -16,7 +16,6 @@ import FixedTimeList from './demo/FixedTimeList.vue';
 import Disabled from './demo/Disabled.vue';
 
 import docEn from './en.md';
-import docZhCN from './zh-cn.md';
 
 const components = [
   {
@@ -104,7 +103,6 @@ function transformMd(text) {
 
 const docMap = {
   en: transformMd(docEn),
-  'zh-cn': transformMd(docZhCN),
 };
 
 const App = {
@@ -135,11 +133,11 @@ const App = {
     getCurrentId() {
       return location.hash.slice(1);
     },
-    handleChangeLocale() {
-      const lang = this.lang === 'en' ? 'zh-cn' : 'en';
-      this.lang = lang;
-      this.changeLocale(lang);
-    },
+    // handleChangeLocale() {
+    //   const lang = this.lang === 'en' ? 'zh-cn' : 'en';
+    //   this.lang = lang;
+    //   this.changeLocale(lang);
+    // },
   },
   render(h) {
     const doc = docMap[this.lang] || docMap.en;
@@ -155,14 +153,11 @@ const App = {
           <a
             style="margin-right: 10px"
             class="mx-btn-text mx-btn"
-            href="https://github.com/mengxiong10/vue2-datepicker"
+            href="https://github.com/jhonedarts/huggy-datepicker"
             target="_blank"
           >
             GitHub
           </a>
-          <button onClick={this.handleChangeLocale} class="mx-btn">
-            {this.lang === 'en' ? '中文' : 'English'}
-          </button>
         </div>
         <div key={this.lang}>
           {components.map(item => {

@@ -22,7 +22,7 @@
         <thead>
           <tr>
             <th v-if="showWeekNumber" :class="`${prefixClass}-week-number-header`"></th>
-            <th v-for="day in days" :key="day">{{ day }}</th>
+            <th v-for="day in days" :key="day.key">{{ day.day }}</th>
           </tr>
         </thead>
         <tbody @click="handleCellClick">
@@ -42,6 +42,7 @@
               v-for="(cell, j) in row"
               :key="j"
               :data-row-col="`${i},${j}`"
+              :data-value="cell.getDate()"
               class="cell"
               :class="getCellClasses(cell)"
               :title="getCellTitle(cell)"
@@ -61,7 +62,7 @@
 import { getWeek, format } from 'date-format-parse';
 import IconButton from './icon-button.vue';
 import { chunk } from '../util/base';
-import { getCalendar, setMonth, setYear } from '../util/date';
+import { getCalendar, setMonth } from '../util/date';
 import { getLocale } from '../locale';
 
 export default {
@@ -105,27 +106,39 @@ export default {
       type: Function,
       default: () => [],
     },
+    calendarTextFormat: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   computed: {
     firstDayOfWeek() {
       return this.getLocale().formatLocale.firstDayOfWeek || 0;
     },
     yearMonth() {
-      const { yearFormat, monthBeforeYear, monthFormat = 'MMM' } = this.getLocale();
+      const { yearFormat, monthBeforeYear } = this.getLocale();
       const yearLabel = {
         panel: 'year',
         label: this.formatDate(this.calendar, yearFormat),
       };
       const monthLabel = {
         panel: 'month',
-        label: this.formatDate(this.calendar, monthFormat),
+        label: this.formatDate(this.calendar, this.calendarTextFormat.month ? this.calendarTextFormat.month.toUpperCase() : 'MMMM'),
       };
       return monthBeforeYear ? [monthLabel, yearLabel] : [yearLabel, monthLabel];
     },
     days() {
       const locale = this.getLocale();
-      const days = locale.days || locale.formatLocale.weekdaysMin;
-      return days.concat(days).slice(this.firstDayOfWeek, this.firstDayOfWeek + 7);
+      const weekFormat = this.calendarTextFormat.week;
+      let keys = locale.days || locale.formatLocale.weekdaysShort;
+      keys = keys.concat(keys).slice(this.firstDayOfWeek, this.firstDayOfWeek + 7);
+
+      const days = weekFormat && (weekFormat.toUpperCase() === 'WW') ? locale.formatLocale.weekdaysShort : keys.map(key => {
+        const day = weekFormat && (weekFormat.toUpperCase() === 'W') ? key[0] : key;
+        return {key, day}
+      });
+      const a = days;
+      return a;
     },
     dates() {
       const year = this.calendar.getFullYear();

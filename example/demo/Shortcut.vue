@@ -2,7 +2,7 @@
   <div class="box">
     <section>
       <p>shortcuts</p>
-      <date-picker v-model="value1" :shortcuts="shortcuts" range placeholder="Select date"></date-picker>
+      <date-picker v-model="value1" :shortcuts="shortcuts" custom-shortcut range confirm clear-button placeholder="Select date"></date-picker>
     </section>
     <section>
       <p>header slot</p>
@@ -41,7 +41,7 @@ export default {
           onClick() {
             const date = new Date();
             // return a Date
-            return date;
+            return [date,date];
           },
         },
         {
@@ -49,7 +49,7 @@ export default {
           onClick() {
             const date = new Date();
             date.setTime(date.getTime() - 3600 * 1000 * 24);
-            return date;
+            return [date,date];
           },
         },
       ],

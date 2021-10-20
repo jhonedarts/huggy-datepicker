@@ -1,17 +1,15 @@
 # huggy-datepicker
 
-[中文版](https://github.com/mengxiong10/vue2-datepicker/blob/master/README.zh-CN.md)
+> A Datepicker Component modified from the https://github.com/mengxiong10/huggy-datepicker v3.10.2 project
 
-> A Datepicker Component modified from the https://github.com/mengxiong10/vue2-datepicker project
-
-<a href="https://travis-ci.org/mengxiong10/vue2-datepicker">
-  <img src="https://travis-ci.org/mengxiong10/vue2-datepicker.svg?branch=master" alt="build:passed">
+<a href="https://travis-ci.org/jhonedarts/huggy-datepicker">
+  <img src="https://travis-ci.org/jhonedarts/huggy-datepicker.svg?branch=master" alt="build:passed">
 </a>
-<a href="https://coveralls.io/github/mengxiong10/vue2-datepicker">
-  <img src="https://coveralls.io/repos/github/mengxiong10/vue2-datepicker/badge.svg?branch=master&service=github" alt="Badge">
+<a href="https://coveralls.io/github/jhonedarts/huggy-datepicker">
+  <img src="https://coveralls.io/repos/github/jhonedarts/huggy-datepicker/badge.svg?branch=master&service=github" alt="Badge">
 </a>
-<a href="https://www.npmjs.com/package/vue2-datepicker">
-  <img src="https://img.shields.io/npm/v/vue2-datepicker.svg" alt="npm">
+<a href="https://www.npmjs.com/package/huggy-datepicker">
+  <img src="https://img.shields.io/npm/v/huggy-datepicker.svg" alt="npm">
 </a>
 <a href="LICENSE">
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT">
@@ -19,22 +17,26 @@
 
 ## Demo
 
-<https://mengxiong10.github.io/vue2-datepicker/index.html>
+<https://jhonedarts.github.io/huggy-datepicker/index.html>
 
-![image](https://github.com/mengxiong10/vue2-datepicker/raw/master/screenshot/demo.png)
+![image](https://github.com/jhonedarts/huggy-datepicker/raw/master/screenshot/demo.png)
 
 ## Install
 
 ```bash
-$ npm install vue2-datepicker --save
+$ npm install huggy-datepicker --save
+
+or
+
+$ yarn add huggy-datepicker
 ```
 
 ## Usage
 
 ```html
 <script>
-  import DatePicker from 'vue2-datepicker';
-  import 'vue2-datepicker/index.css';
+  import DatePicker from 'huggy-datepicker';
+  import 'huggy-datepicker/index.css';
 
   export default {
     components: { DatePicker },
@@ -67,9 +69,9 @@ To create a scss file. e.g. `datepicker.scss`:
 $namespace: 'xmx'; // change the 'mx' to 'xmx'. then <date-picker prefix-class="xmx" />
 
 $default-color: #555;
-$primary-color: #1284e7;
+$primary-color: #321BDE;
 
-@import '~vue2-datepicker/scss/index.scss';
+@import '~huggy-datepicker/scss/index.scss';
 ```
 
 ## Internationalization
@@ -79,14 +81,14 @@ you can import a locale file.
 Once you import a locale, it becomes the active locale.
 
 ```js
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
+import DatePicker from 'huggy-datepicker';
+import 'huggy-datepicker/index.css';
 
-import 'vue2-datepicker/locale/zh-cn';
+import 'huggy-datepicker/locale/pt-br';
 ```
 
 You can also override some of the default locale by `lang`.
-[Full config](https://github.com/mengxiong10/vue2-datepicker/blob/master/locale.md)
+[Full config](https://github.com/jhonedarts/huggy-datepicker/blob/master/locale.md)
 
 ```html
 <script>
@@ -125,6 +127,8 @@ You can also override some of the default locale by `lang`.
 | clearable           | if false, don't show the clear icon              | `boolean`                                       | true           |
 | confirm             | if true, need click the button to change value   | `boolean`                                       | false          |
 | confirm-text        | the text of confirm button                       | `string`                                        | 'OK'           |
+| clear-button        | if true, shows the button to clear the values    | `boolean`                                       | false          |
+| clear-text          | the text of clear button                         | `string`                                        | 'Clear'        |
 | multiple            | if true, multi-select date                       | `boolean`                                       | false          |
 | disabled            | disable the component                            | `boolean`                                       | false          |
 | disabled-date       | specify the date that cannot be selected         | `(date: Date, currentValue: Date[]) => boolean` | -              |
@@ -138,7 +142,10 @@ You can also override some of the default locale by `lang`.
 | popup-style         | popup style                                      | `object`                                        | —              |
 | popup-class         | popup classes                                    |                                                 | —              |
 | shortcuts           | set shortcuts to select                          | `Array<{text, onClick}>`                        | -              |
+| custom-shortcut     | shows the custom option in the shortcuts         | `boolean`                                       | false          |
+| custom-text         | the text of custom shortcut button               | `string`                                        | 'Custom'       |
 | title-format        | format of the tooltip in calendar cell           | [token](#token)                                 | 'YYYY-MM-DD'   |
+| calendar-text-format| week and months formats in the table date        | `object`                                        | —              |
 | partial-update      | whether update date when select year or month    | `boolean`                                       | false          |
 | range-separator     | text of range separator                          | `string`                                        | ' ~ '          |
 | show-week-number    | determine whether show week number               | `boolean`                                       | false          |
@@ -260,6 +267,22 @@ The shortcuts for the range picker
 | text      | title of the shortcut                     |
 | onClick   | callback function , need to return a Date |
 
+#### calendar-text-format
+
+Format of the text of month and week shown on table date picker
+
+```js
+{
+  month: 'MMMM',
+  // MMMM: 'full',
+  // MMM: 'short',
+  week: 'W',
+  // WWW: 'short',
+  // WW: 'min',
+  // W: 'initial',
+};
+```
+
 #### time-picker-options
 
 Set fixed time list to select;
@@ -306,17 +329,9 @@ Set fixed time list to select;
 ## ChangeLog
 
 [CHANGELOG](CHANGELOG.md)
-
-## One-time Donations
-
-If you find this project useful, you can buy me a coffee
-
-[Paypal Me](https://www.paypal.me/mengxiong10)
-
-![donate](https://user-images.githubusercontent.com/14135808/83999111-a7947600-a994-11ea-84e9-9a215def4155.png)
-
 ## License
 
-[MIT](https://github.com/mengxiong10/vue2-datepicker/blob/master/LICENSE)
+[MIT](https://github.com/jhonedarts/huggy-datepicker/blob/master/LICENSE)
 
-Copyright (c) 2017-present xiemengxiong
+Copyright (c) 2017-2021 xiemengxiong
+Copyright (c) 2021-present jhonedarts
