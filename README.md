@@ -2,8 +2,8 @@
 
 > A Datepicker Component modified from the https://github.com/mengxiong10/huggy-datepicker v3.10.2 project
 
-<a href="https://travis-ci.org/jhonedarts/huggy-datepicker">
-  <img src="https://travis-ci.org/jhonedarts/huggy-datepicker.svg?branch=master" alt="build:passed">
+<a href="https://travis-ci.com/jhonedarts/huggy-datepicker">
+  <img src="https://travis-ci.com/jhonedarts/huggy-datepicker.svg?branch=master" alt="build:passed">
 </a>
 <a href="https://coveralls.io/github/jhonedarts/huggy-datepicker">
   <img src="https://coveralls.io/repos/github/jhonedarts/huggy-datepicker/badge.svg?branch=master&service=github" alt="Badge">
