@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Vue2-datepicker version**:
+**huggy-datepicker version**:
 **Vue version**:
 **Browser**:
 
