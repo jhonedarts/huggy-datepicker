@@ -151,9 +151,9 @@ export default {
             )) ||
           (isObject(value) &&
             Array.isArray(value.items) &&
-              value.items.every(
-                v => isObject(v) && typeof v.text === 'string' && typeof v.onClick === 'function'
-              ))
+            value.items.every(
+              v => isObject(v) && typeof v.text === 'string' && typeof v.onClick === 'function'
+            ))
         );
       },
       default() {
@@ -167,16 +167,23 @@ export default {
       currentValue: null,
       userInput: null,
       defaultOpen: false,
+      customShortcutInserted: false,
     };
   },
   computed: {
     shortcutsComputed() {
       const shortcuts = Array.isArray(this.shortcuts) ? this.shortcuts : this.shortcuts.items;
-      if (isObject(this.shortcuts) && this.shortcuts.customShortcut) {
+      if (
+        isObject(this.shortcuts) &&
+        this.shortcuts.customShortcut &&
+        !this.customShortcutInserted
+      ) {
+        this.customShortcutInserted = true;
         shortcuts.push({
           text: this.shortcuts.CustomShortcutText ? this.shortcuts.CustomShortcutText : 'Custom',
           onClick() {},
           custom: true,
+          selected: this.currentValue !== null,
         });
       }
 

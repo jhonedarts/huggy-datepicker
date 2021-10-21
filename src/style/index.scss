@@ -7,7 +7,6 @@
 .#{$namespace}-datepicker {
   position: relative;
   display: inline-block;
-  width: 210px;
   svg {
     width: 1em;
     height: 1em;
@@ -15,10 +14,6 @@
     fill: currentColor;
     overflow: hidden;
   }
-}
-
-.#{$namespace}-datepicker-range {
-  width: 320px;
 }
 
 .#{$namespace}-datepicker-inline {
@@ -120,7 +115,6 @@
 
 .#{$namespace}-datepicker-sidebar {
   box-sizing: border-box;
-  width: $sidebar-margin-left;
   margin: 16px 0;
   padding: 0 16px;
   border-right: 1px solid $light-gray;
@@ -130,10 +124,6 @@
   @media (max-width: 750px) {
     min-height: 548px !important;
   }
-}
-
-.#{$namespace}-datepicker-sidebar + .#{$namespace}-datepicker-content {
-  margin-left: $sidebar-margin-left;
 }
 
 .#{$namespace}-datepicker-body {
@@ -225,7 +215,6 @@
     text-align: center;
     vertical-align: middle;
     display: inline-block;
-    max-width: 120px;
     letter-spacing: 1.25px;
   }
 
