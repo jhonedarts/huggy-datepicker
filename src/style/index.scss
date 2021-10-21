@@ -510,7 +510,9 @@
     }
     &.today {
       font-weight: 900;
-      color: $today-color;
+      &:not(.active) {
+        color: $today-color;
+      }
       &.disabled {
         opacity: 0.5;
       }

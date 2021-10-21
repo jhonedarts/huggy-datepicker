@@ -124,14 +124,6 @@ export default {
       type: String,
       default: 'Clear',
     },
-    customShortcut: {
-      type: Boolean,
-      default: false,
-    },
-    CustomShortcutText: {
-      type: String,
-      default: 'Custom',
-    },
     calendarTextFormat: {
       type: Object,
       default: () => {
@@ -150,13 +142,18 @@ export default {
       type: Function,
     },
     shortcuts: {
-      type: Array,
+      type: [Array, Object],
       validator(value) {
         return (
-          Array.isArray(value) &&
-          value.every(
-            v => isObject(v) && typeof v.text === 'string' && typeof v.onClick === 'function'
-          )
+          (Array.isArray(value) &&
+            value.every(
+              v => isObject(v) && typeof v.text === 'string' && typeof v.onClick === 'function'
+            )) ||
+          (isObject(value) &&
+            Array.isArray(value.items) &&
+              value.items.every(
+                v => isObject(v) && typeof v.text === 'string' && typeof v.onClick === 'function'
+              ))
         );
       },
       default() {
@@ -174,15 +171,16 @@ export default {
   },
   computed: {
     shortcutsComputed() {
-      if (this.customShortcut) {
-        this.shortcuts.push({
-          text: this.CustomShortcutText,
+      const shortcuts = Array.isArray(this.shortcuts) ? this.shortcuts : this.shortcuts.items;
+      if (isObject(this.shortcuts) && this.shortcuts.customShortcut) {
+        shortcuts.push({
+          text: this.shortcuts.CustomShortcutText ? this.shortcuts.CustomShortcutText : 'Custom',
           onClick() {},
           custom: true,
         });
       }
 
-      return this.shortcuts;
+      return shortcuts;
     },
     popupVisible() {
       return !this.disabled && (typeof this.open === 'boolean' ? this.open : this.defaultOpen);
@@ -272,8 +270,8 @@ export default {
       }
     },
     setCustomShortcut() {
-      if (this.shortcuts.length > 0) {
-        this.shortcuts.forEach(s => {
+      if (this.shortcutsComputed.length > 0) {
+        this.shortcutsComputed.forEach(s => {
           s.selected = false;
           if (s.custom) {
             s.selected = true;

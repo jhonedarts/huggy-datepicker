@@ -141,9 +141,7 @@ You can also override some of the default locale by `lang`.
 | default-panel       | default panel of the picker                      | year\|month                                     | -              |
 | popup-style         | popup style                                      | `object`                                        | —              |
 | popup-class         | popup classes                                    |                                                 | —              |
-| shortcuts           | set shortcuts to select                          | `Array<{text, onClick}>`                        | -              |
-| custom-shortcut     | shows the custom option in the shortcuts         | `boolean`                                       | false          |
-| custom-text         | the text of custom shortcut button               | `string`                                        | 'Custom'       |
+| shortcuts           | set shortcuts to select                          | `Array<{text, onClick}>` \| `{customShorcut: boolean, customShorcutText: string, items: Array<{text, onClick}>}` | -              |
 | title-format        | format of the tooltip in calendar cell           | [token](#token)                                 | 'YYYY-MM-DD'   |
 | calendar-text-format| week and months formats in the table date        | `object`                                        | —              |
 | partial-update      | whether update date when select year or month    | `boolean`                                       | false          |
